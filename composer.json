@@ -1,5 +1,5 @@
 {
-    "name": "sergiodlopes/omnipay-eupago",
+    "name": "fraganzas/omnipago",
     "type": "library",
     "description": "euPago integration in omnipay",
     "keywords": [
