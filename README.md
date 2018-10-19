@@ -1,4 +1,4 @@
-# Eupago - euPago integration in omnipay 
+# OMNIPAGO - euPago integration in omnipay 
 
 **This is the euPago solution for omnipay payment processing library**
 
