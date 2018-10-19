@@ -9,17 +9,17 @@
         "omnipay",
         "pay",
         "payment",
-		"multibanco",
+	"multibanco",
         "mbway",
         "pagaqui",
         "payshop"
     ],
-    "homepage": "https://github.com/sergiodlopes/omnipay-eupago",
+    "homepage": "https://github.com/fraganzas/omnipago",
     "license": "MIT",
     "authors": [
         {
-            "name": "Sérgio Dinis Lopes",
-            "email": "contacto@sergiodinislopes.pt"
+            "name": "Fragoso",
+            "email": "joao.fragoso16@gmail.com"
         }
     ],
     "autoload": {
