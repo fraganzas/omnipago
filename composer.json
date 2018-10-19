@@ -24,16 +24,5 @@
     ],
     "autoload": {
         "psr-4": { "Omnipay\\Eupago\\" : "src/" }
-    },
-    "require": {
-         "omnipay/common": "~3.0"
-    },
-    "require-dev": {
-        "omnipay/tests": "~3.0"
-    },
-    "extra": {
-        "branch-alias": {
-            "master": "2.0-dev"
-        }
     }
 }
