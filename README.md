@@ -8,8 +8,7 @@ Once installed and configured you are able to use all the features of our [API](
 
 ## Instalation
 
-For instalation details please check the [omnipay](https://github.com/thephpleague/omnipay#installation) git page.
-
+composer require league/omnipay:^3 fraganzas/omnipay
 
 ## Implemented Payment Methods
 
@@ -17,16 +16,6 @@ For instalation details please check the [omnipay](https://github.com/thephpleag
 - **MBWay** - MBWay payment system
 - **PayShop**
 - **Pagaqui**
-
-###### Future implementations:
-- **Credit Card**
-
-## Required fields
-
-- 'apiKey' - to generate your api key please [create an account](https://eupago.pt/registo) on their website
-- 'currency' - currency is required and must be 'EUR' or '€'
-- 'amount' - Purchase amount
-- 'transactionId' - usually this is the order ID
 
 ## Examples
 
@@ -83,3 +72,64 @@ if ($paymentStatus->isPaid()) {
 
 
 ```
+
+#### Create MBWay Reference
+
+$gateway = Omnipay::create('Eupago_MBWay');
+
+    // Campos obrigatórios
+    $gateway->setApiKey('xxxx-xxxx-xxx-xxx'); //ver aqui: replica.eupago.pt/clientes/contas/fichas
+    $gateway->setCurrency('EUR');
+    $gateway->setTransactionId('1');
+    $gateway->setAlias('910000000'); //número tlm cliente
+    // Campos opcionais
+    $gateway->setStartDate(new \DateTime);
+    $gateway->setEndDate((new \DateTime)->modify('48 hours')); //limite
+
+    $response = $gateway->purchase(['amount' => '10.00'])->send();
+
+    if ($response->isSuccessful()) {
+	// return the euPago api response with payment credentials
+	// see src/Message/MultibancoResponse.php methods for more information
+	$paymentData = $response->getData();
+
+	// return the Transaction Reference
+	// the transaction Reference is required for call the status of payment, you should store them in your "orders" table related database
+	$referenceId = $response->getTransactionReference();
+
+	//Exemplo de resposta bem sucedida
+	/*
+	+"sucesso": true
+	+"referencia": "xxxx"
+	+"valor": 10.0
+	+"estado": 0
+	+"resposta": "OK"
+	+"alias": "351#910000000"
+	*/
+
+    } 
+    else {
+	// Transaction creation failed: display message to customer
+	echo $response->getMessage();
+    }
+    
+    ```
+
+#### Check Multibanco reference status
+$gateway = Omnipay::create('Eupago_MBWay');
+
+    // The transaction reference is required
+    $paymentStatus = $gateway->checkStatus([
+	'transactionReference' => $request->referenceID
+    ])->send();
+
+    if ($paymentStatus->isPaid()) {
+	//Referência paga
+    } else {
+	/*
+	 * Valor de "$paymentStatus->getMessage();" pode ser:
+	 * "OK" : Referência existe mas não está pago
+	 * "Referência Inexistente." : Referência não existe.
+	 */
+	echo $paymentStatus->getMessage();
+    }
